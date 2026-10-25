@@ -1,0 +1,167 @@
+/* ============================================================
+   证件照 · 全局样式 / 设计变量
+   蓝白灰体系，卡片式布局，克制留白
+   ============================================================ */
+
+page {
+  --blue: #2E6BF6;
+  --blue-dark: #1D50CE;
+  --blue-soft: #EDF2FF;
+  --ink: #101522;
+  --ink-2: #4A5364;
+  --sub: #7C879B;
+  --line: #EAEEF5;
+  --bg: #F5F7FB;
+  --white: #FFFFFF;
+  --warn: #B4690E;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+view, text, button, scroll-view, image {
+  box-sizing: border-box;
+}
+
+.page {
+  min-height: 100vh;
+}
+
+/* ---------- 通用容器 ---------- */
+.wrap {
+  padding: 0 32rpx;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 24rpx;
+  border: 1rpx solid var(--line);
+}
+
+/* ---------- 区块标题 ---------- */
+.sec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 44rpx 0 20rpx;
+}
+.sec-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+  color: var(--ink);
+}
+.sec-note {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 96rpx;
+  border-radius: 999rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  border: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+.btn::after {
+  border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #3D7BFF 0%, #2E6BF6 55%, #2459DF 100%);
+  color: #fff;
+  box-shadow: 0 10rpx 26rpx rgba(46, 107, 246, 0.28);
+}
+.btn-primary.btn-hover {
+  transform: translateY(1rpx);
+  box-shadow: 0 4rpx 14rpx rgba(46, 107, 246, 0.24);
+}
+.btn-ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1rpx solid var(--line);
+}
+.btn-ghost.btn-hover {
+  background: #F7F9FD;
+}
+
+/* ---------- 底部操作条 ---------- */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 32rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20rpx);
+  border-top: 1rpx solid var(--line);
+  z-index: 20;
+}
+.bar-tip {
+  margin-top: 16rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--sub);
+}
+
+/* 给固定底栏留出空间 */
+.has-bar {
+  padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
+}
+
+/* ---------- 小徽标 ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: 40rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  line-height: 1;
+}
+.pill-soft {
+  background: rgba(46, 107, 246, 0.08);
+  color: var(--blue);
+}
+.pill-line {
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- 隐私提示 ---------- */
+.privacy-note {
+  display: flex;
+  align-items: flex-start;
+  padding: 22rpx 24rpx;
+  background: #F0F5FF;
+  border-radius: 18rpx;
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: #3D5A96;
+}
+.privacy-note .ico {
+  width: 30rpx;
+  height: 30rpx;
+  flex: 0 0 30rpx;
+  margin-right: 14rpx;
+  margin-top: 2rpx;
+  border-radius: 8rpx;
+  background: var(--blue);
+  color: #fff;
+  font-size: 19rpx;
+  text-align: center;
+  line-height: 30rpx;
+  font-weight: 700;
+}

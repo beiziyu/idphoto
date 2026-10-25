@@ -1,0 +1,10 @@
+{
+  "name": "segment",
+  "version": "2.0.0",
+  "description": "人像分割云函数（主：腾讯云 SegmentPortraitPic；备：本地 ONNX 懒加载）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "jpeg-js": "^0.4.4"
+  }
+}

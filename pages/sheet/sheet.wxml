@@ -1,0 +1,30 @@
+<view class="page">
+
+  <view class="stage">
+    <canvas type="2d" id="cv" class="cv" style="width:{{cw}}px;height:{{ch}}px"></canvas>
+    <view wx:if="{{loading}}" class="veil"><view class="spinner"></view></view>
+  </view>
+
+  <view class="card info">
+    <view class="row">
+      <text class="k">相纸</text>
+      <text class="v">6 寸 · 152 × 102 mm</text>
+    </view>
+    <view class="row">
+      <text class="k">单张</text>
+      <text class="v">{{sizeName}} · {{pxText}}</text>
+    </view>
+    <view class="row">
+      <text class="k">可排</text>
+      <text class="v hi">{{count}} 张</text>
+    </view>
+  </view>
+
+  <view class="tip">按 300dpi 输出，拿去照相馆或自助机冲印 6 寸相纸，回家自己裁开就能用。照片仍然只在本机处理。</view>
+
+  <view class="bar">
+    <button class="btn btn-primary" hover-class="btn-hover" bindtap="save">保存排版图</button>
+    <view class="bar-tip">排版图同样不上传，直接存进相册</view>
+  </view>
+
+</view>

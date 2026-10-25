@@ -1,0 +1,64 @@
+<view class="page">
+
+  <view class="lead">
+    <view class="lead-t">你的照片，没有离开过这台手机</view>
+    <view class="lead-s">这不是一句宣传语，而是这个工具的技术选择。</view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">1</text>
+      <text class="sec-name">照片去哪了</text>
+    </view>
+    <view class="sec-b">选好照片后，图片被读进小程序的本地内存，在你自己手机上完成裁剪、换底色、美颜，然后直接写入手机相册。<text class="hl">整个过程没有任何网络上传</text>，我们的服务器上没有、也不会有你的照片。</view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">2</text>
+      <text class="sec-name">我们不做什么</text>
+    </view>
+    <view class="sec-b">
+      <view class="li">不做人脸识别，不提取、不上传人脸特征</view>
+      <view class="li">不保存、不备份、不训练任何你的照片</view>
+      <view class="li">不读取相册里你选中的那张以外的图片</view>
+      <view class="li">不收集通讯录、位置、设备标识等信息</view>
+    </view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">3</text>
+      <text class="sec-name">请自己保存好</text>
+    </view>
+    <view class="sec-b">成品只存在于手机相册和你本次的操作过程里。微信会自动清理小程序产生的临时文件，<text class="hl">我们无法帮你找回已经删掉的照片</text>，请及时保存到自己确认安全的地方。</view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">4</text>
+      <text class="sec-name">关于换底色</text>
+    </view>
+    <view class="sec-b">底色替换是在本地做的背景分离：从照片边缘取样背景色，再把与之连通的区域识别为背景。所以<text class="hl">在纯色墙面前拍的照片效果最好</text>；如果背景杂乱、或有强逆光和阴影，可能会识别不准，这时可以换一张照片重来。</view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">5</text>
+      <text class="sec-name">免责声明</text>
+    </view>
+    <view class="sec-b">本工具生成的图片仅供参考。各类证件受理机关对照片的尺寸、底色、着装、是否允许佩戴眼镜、是否允许修图等有各自的要求，请以受理机关的规定为准。因照片不符合受理要求而造成的一切后果，由使用者自行承担。</view>
+  </view>
+
+  <view class="card sec">
+    <view class="sec-h">
+      <text class="idx">6</text>
+      <text class="sec-name">关于广告</text>
+    </view>
+    <view class="sec-b">这个工具目前完全免费。为了让它能长期维护下去，未来可能接入微信广告。广告由微信广告平台投放，<text class="hl">不具备读取你照片的能力</text>，也不会影响你的照片处理。</view>
+  </view>
+
+  <view class="foot">{{appName}} · 本机制作　v{{version}}</view>
+  <view wx:if="{{beian}}" class="foot foot-beian">{{beian}}</view>
+
+</view>

@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+miniprogram_npm/
+
+# 模型文件（体积大，需单独下载）
+cloudfunctions/segment/model/
+*.onnx
+
+# 设计产物/临时文件
+designkit-artifacts/
+docs/
+规格输出/
+
+# 自动化测试
+mpauto/
+
+# 系统文件
+.DS_Store
+*.log

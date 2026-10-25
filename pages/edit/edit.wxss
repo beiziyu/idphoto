@@ -1,0 +1,407 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
+}
+
+/* ---------- 预览区 ---------- */
+.stage {
+  padding: 40rpx 32rpx 18rpx;
+  background: linear-gradient(180deg, #EAEFF7 0%, #E5EBF4 100%);
+}
+
+.frame {
+  position: relative;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 4rpx;
+  overflow: hidden;
+  box-shadow: 0 14rpx 38rpx rgba(16, 21, 34, 0.2);
+}
+
+.cv {
+  display: block;
+}
+
+.veil {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.84);
+}
+.spinner {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  border: 4rpx solid #DCE6F8;
+  border-top-color: #2E6BF6;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.veil-txt {
+  margin-top: 18rpx;
+  font-size: 23rpx;
+  color: #5C6678;
+}
+
+.flag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10rpx 12rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
+  color: #8A5308;
+  text-align: center;
+  background: rgba(255, 248, 235, 0.96);
+}
+
+.stage-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+.hf-hint {
+  font-size: 21rpx;
+  color: #76839A;
+}
+.hf-reset {
+  font-size: 22rpx;
+  color: #2E6BF6;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(46, 107, 246, 0.1);
+}
+
+/* ---------- 控制面板 ---------- */
+.panel {
+  margin-top: 22rpx;
+  background: #fff;
+  border-radius: 28rpx 28rpx 0 0;
+  box-shadow: 0 -6rpx 24rpx rgba(16, 21, 34, 0.04);
+  padding: 26rpx 32rpx 36rpx;
+}
+
+.tabs {
+  display: flex;
+  padding: 6rpx;
+  background: #F1F4F9;
+  border-radius: 16rpx;
+}
+.tab {
+  flex: 1;
+  height: 68rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 27rpx;
+  color: #5C6678;
+  border-radius: 12rpx;
+  transition: all 0.18s ease;
+}
+.tab.on {
+  background: #fff;
+  color: #101522;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(16, 21, 34, 0.08);
+}
+
+.pane {
+  padding-top: 30rpx;
+}
+.pane-empty {
+  padding: 30rpx 24rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #6E7A90;
+  background: #F7F9FD;
+  border-radius: 16rpx;
+}
+.pe-hl {
+  color: #1D50CE;
+  font-weight: 600;
+}
+
+/* 底色色块 */
+.swatches {
+  display: flex;
+  justify-content: space-between;
+}
+.sw {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8rpx 0;
+}
+.sw-dot {
+  width: 74rpx;
+  height: 74rpx;
+  border-radius: 50%;
+  border: 4rpx solid transparent;
+  box-shadow: inset 0 0 0 1rpx rgba(16, 21, 34, 0.12), 0 3rpx 10rpx rgba(16, 21, 34, 0.1);
+  transition: all 0.16s ease;
+}
+.sw.on .sw-dot {
+  border-color: #2E6BF6;
+  transform: scale(1.06);
+  box-shadow: inset 0 0 0 1rpx rgba(16, 21, 34, 0.08), 0 0 0 6rpx rgba(46, 107, 246, 0.12);
+}
+.sw-name {
+  margin-top: 12rpx;
+  font-size: 21rpx;
+  color: #76839A;
+}
+.sw.on .sw-name {
+  color: #1D50CE;
+  font-weight: 600;
+}
+
+/* 美颜 */
+.bp-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.bp-label {
+  font-size: 26rpx;
+  color: #4A5364;
+}
+.bp-val {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2E6BF6;
+  font-variant-numeric: tabular-nums;
+}
+.bp-slider {
+  margin: 6rpx 8rpx 0;
+}
+.presets {
+  display: flex;
+  margin-top: 10rpx;
+}
+.preset {
+  flex: 1;
+  height: 66rpx;
+  line-height: 66rpx;
+  text-align: center;
+  font-size: 25rpx;
+  color: #4A5364;
+  background: #F5F7FB;
+  border-radius: 14rpx;
+  border: 2rpx solid transparent;
+}
+.preset + .preset {
+  margin-left: 14rpx;
+}
+.preset.on {
+  color: #1D50CE;
+  font-weight: 600;
+  background: #F0F5FF;
+  border-color: #2E6BF6;
+}
+.bp-note {
+  margin-top: 22rpx;
+  font-size: 21rpx;
+  line-height: 1.7;
+  color: #98A1B2;
+}
+
+/* ---------- 底部条 ---------- */
+.bar-row {
+  display: flex;
+  align-items: center;
+}
+.bar-meta {
+  flex: 1;
+  min-width: 0;
+}
+.bm-name {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #101522;
+}
+.bm-px {
+  display: block;
+  margin-top: 2rpx;
+  font-size: 21rpx;
+  color: #98A1B2;
+  font-variant-numeric: tabular-nums;
+}
+.bar-btn {
+  flex: 0 0 320rpx;
+  width: 320rpx;
+  height: 92rpx;
+  font-size: 30rpx;
+  margin-left: 20rpx;
+}
+
+.hidden-cv {
+  position: fixed;
+  left: -2000px;
+  top: 0;
+  width: 4px;
+  height: 4px;
+}
+
+.dbg {
+  position: absolute;
+  left: 8rpx;
+  bottom: 8rpx;
+  padding: 4rpx 10rpx;
+  font-size: 18rpx;
+  line-height: 1.4;
+  color: #333;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 6rpx;
+  max-width: 96%;
+  word-break: break-all;
+}
+
+.bm-engine {
+  margin-left: 10rpx;
+  padding: 0 10rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  font-size: 19rpx;
+  color: #98A1B2;
+  background: #F1F4F9;
+  border-radius: 6rpx;
+}
+.bm-engine.on {
+  color: #fff;
+  background: linear-gradient(135deg, #3D7BFF, #2E6BF6);
+}
+
+/* ============ 上传后的扫描动画 ============ */
+.scan {
+  position: absolute;
+  z-index: 20;
+  background: #1b2233;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.scan-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 压暗原图，让扫描线更明显 */
+.scan-shade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(8, 12, 22, 0.42), rgba(8, 12, 22, 0.22));
+}
+
+/* 扫描光带：从上往下循环 */
+.scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: linear-gradient(
+    180deg,
+    rgba(74, 144, 226, 0) 0%,
+    rgba(74, 144, 226, 0.45) 38%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(74, 144, 226, 0.45) 62%,
+    rgba(74, 144, 226, 0) 100%
+  );
+  top: -120rpx;
+  animation: scanSweep 1.6s linear infinite;
+}
+
+/* 用 top 做位移：transform 的百分比是相对元素自身高度，
+   在这里只会移动 120rpx，看起来就是「只在底部扫一下」。 */
+@keyframes scanSweep {
+  0% { top: -120rpx; }
+  100% { top: 100%; }
+}
+
+/* 四角取景框 */
+.scan-corner {
+  position: absolute;
+  width: 34rpx;
+  height: 34rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.9);
+}
+.scan-corner.tl { left: 16rpx; top: 16rpx; border-right: none; border-bottom: none; border-radius: 8rpx 0 0 0; }
+.scan-corner.tr { right: 16rpx; top: 16rpx; border-left: none; border-bottom: none; border-radius: 0 8rpx 0 0; }
+.scan-corner.bl { left: 16rpx; bottom: 16rpx; border-right: none; border-top: none; border-radius: 0 0 0 8rpx; }
+.scan-corner.br { right: 16rpx; bottom: 16rpx; border-left: none; border-top: none; border-radius: 0 0 8rpx 0; }
+
+/* 底部提示 */
+.scan-badge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #56b6ff;
+  margin-right: 12rpx;
+  animation: scanPulse 1s ease-in-out infinite;
+}
+
+@keyframes scanPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.scan-txt {
+  font-size: 24rpx;
+  color: #fff;
+  letter-spacing: 1rpx;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.45);
+}
+
+/* 结果淡入 */
+.cv-hide {
+  opacity: 0;
+}
+
+.cv-show {
+  animation: cvFadeIn 0.5s ease both;
+}
+
+@keyframes cvFadeIn {
+  from { opacity: 0; transform: scale(1.015); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 云端成品图：直接显示，不走画布 */
+.result-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  animation: cvFadeIn 0.45s ease both;
+}

@@ -1,0 +1,43 @@
+<view class="page">
+
+  <view class="head">
+    <view class="ok">
+      <view class="ok-ico"></view>
+    </view>
+    <view class="ok-t">{{saved ? '已存入相册' : '证件照已生成'}}</view>
+    <view class="ok-s">{{saved ? '打开手机相册就能看到这张照片' : '点下面的按钮把它存进相册'}}</view>
+  </view>
+
+  <view class="shot">
+    <view class="shot-card">
+      <image class="shot-img" src="{{path}}" mode="widthFix" show-menu-by-longpress="{{true}}" />
+    </view>
+    <view class="shot-meta">
+      <text class="sm-strong">{{name}}</text>
+      <text class="sm-dot">·</text>
+      <text>{{mmText}}</text>
+      <text class="sm-dot">·</text>
+      <text>{{pxText}}</text>
+      <text class="sm-dpi">300dpi</text>
+    </view>
+  </view>
+
+  <view class="privacy-note">
+    <view class="ico">锁</view>
+    <text>这张照片<text class="pn-strong">没有上传到任何服务器</text>，全程在你手机上完成处理。微信会清理临时文件，请确认已保存到相册并自行备份。</text>
+  </view>
+
+  <!-- 广告位（现在留空；开通流量主后在此插原生模板广告即可） -->
+  <view wx:if="{{adEnabled}}" class="ad-slot"></view>
+
+  <view class="acts">
+    <button class="btn btn-primary" hover-class="btn-hover" bindtap="saveAgain">保存到相册</button>
+    <view class="acts-row">
+      <button class="btn btn-ghost acts-half" bindtap="openSheet">排版打印</button>
+      <button class="btn btn-ghost acts-half" bindtap="back">继续调整</button>
+      <button class="btn btn-ghost acts-half" bindtap="home">完成</button>
+    </view>
+    <view class="acts-tip">办理机关对尺寸、底色有特殊要求时，请以其规定为准</view>
+  </view>
+
+</view>

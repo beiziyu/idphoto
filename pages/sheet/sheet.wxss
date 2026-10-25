@@ -1,0 +1,74 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: calc(210rpx + env(safe-area-inset-bottom));
+}
+
+.stage {
+  padding: 36rpx 32rpx 20rpx;
+  background: linear-gradient(180deg, #EAEFF7 0%, #E5EBF4 100%);
+}
+.cv {
+  display: block;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 4rpx;
+  box-shadow: 0 12rpx 32rpx rgba(16, 21, 34, 0.18);
+}
+.veil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spinner {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  border: 4rpx solid #DCE6F8;
+  border-top-color: #2E6BF6;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.info {
+  margin: 26rpx 32rpx 0;
+  padding: 8rpx 28rpx;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84rpx;
+  border-bottom: 1rpx solid #F0F3F8;
+}
+.row:last-child {
+  border-bottom: none;
+}
+.k {
+  font-size: 25rpx;
+  color: #7C879B;
+}
+.v {
+  font-size: 26rpx;
+  color: #101522;
+  font-variant-numeric: tabular-nums;
+}
+.hi {
+  color: #2E6BF6;
+  font-weight: 600;
+}
+
+.tip {
+  margin: 24rpx 32rpx 0;
+  font-size: 21rpx;
+  line-height: 1.7;
+  color: #98A1B2;
+}

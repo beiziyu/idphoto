@@ -1,0 +1,138 @@
+<view class="page">
+
+  <view class="hero" style="padding-top:{{safeTop}}px">
+    <view class="glow"></view>
+
+    <view class="brand">
+      <view class="brand-mark"></view>
+      <text class="brand-name">方寸证件照</text>
+      <text class="brand-ver">本机制作</text>
+    </view>
+
+    <view class="hero-main">
+      <view class="hero-copy">
+        <view class="h1">一张自拍<br />做出<text class="h1-hl">合规证件照</text></view>
+        <view class="h2">自动构图 · 可调美颜 · 存进相册</view>
+      </view>
+      <view class="demos">
+        <view class="demo" wx:for="{{demoBgs}}" wx:key="*this" style="background:{{item}}">
+          <view class="demo-head"></view>
+          <view class="demo-body"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="chips">
+      <view class="chip">纯本地处理</view>
+      <view class="chip">不上传服务器</view>
+      <view class="chip">免费保存</view>
+    </view>
+  </view>
+
+  <view class="body">
+
+    <view class="sec">
+      <text class="sec-title">常用尺寸</text>
+      <text class="sec-note">点击选一张规格</text>
+    </view>
+
+    <view class="hot-grid">
+      <view
+        wx:for="{{hot}}"
+        wx:key="id"
+        class="hcard {{cur === item.id ? 'on' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="pick"
+      >
+        <view class="hcard-top">
+          <text class="hcard-name">{{item.name}}</text>
+          <text wx:if="{{item.tag}}" class="hcard-tag">{{item.tag}}</text>
+        </view>
+        <text class="hcard-mm">{{item.mmText}}</text>
+        <text class="hcard-use">{{item.use}}</text>
+      </view>
+    </view>
+
+    <view class="custom-card" bindtap="openCustom">
+      <view class="cc-left">
+        <text class="cc-title">自定义尺寸</text>
+        <text class="cc-sub">{{customLabel}}</text>
+      </view>
+      <text class="cc-arrow">›</text>
+    </view>
+
+    <view class="sec">
+      <text class="sec-title">证件办理</text>
+      <text class="sec-note">国标尺寸</text>
+    </view>
+    <view class="more-grid">
+      <view wx:for="{{docItems}}" wx:key="id" class="mcard {{cur === item.id ? 'on' : ''}}" data-id="{{item.id}}" bindtap="pick">
+        <text class="mcard-name">{{item.name}}</text>
+        <text class="mcard-mm">{{item.size}}</text>
+      </view>
+    </view>
+
+    <view class="sec">
+      <text class="sec-title">签证</text>
+      <text class="sec-note">按国家</text>
+    </view>
+    <view class="more-grid">
+      <view wx:for="{{visaItems}}" wx:key="id" class="mcard {{cur === item.id ? 'on' : ''}}" data-id="{{item.id}}" bindtap="pick">
+        <text class="mcard-name">{{item.name}}</text>
+        <text class="mcard-mm">{{item.size}}</text>
+      </view>
+    </view>
+
+    <view class="sec">
+      <text class="sec-title">报名考试</text>
+      <text class="sec-note">按系统要求</text>
+    </view>
+    <view class="more-grid">
+      <view wx:for="{{examItems}}" wx:key="id" class="mcard {{cur === item.id ? 'on' : ''}}" data-id="{{item.id}}" bindtap="pick">
+        <text class="mcard-name">{{item.name}}</text>
+        <text class="mcard-mm">{{item.size}}</text>
+      </view>
+    </view>
+
+
+    <view class="privacy-note mt40">
+      <view class="ico">锁</view>
+      <text>你上传的照片<text class="pn-strong">只在这台手机上处理</text>，不会上传、也不会保存在任何服务器。生成后请及时保存到相册，小程序退出后临时文件会被系统清理。</text>
+    </view>
+
+    <view class="foot-links">
+      <text bindtap="goAbout">隐私说明 · 免责声明</text>
+    </view>
+
+  </view>
+
+  <view class="bar">
+    <button class="btn btn-primary" hover-class="btn-hover" bindtap="upload">
+      上传照片 · 制作{{curName}}
+    </button>
+    <view class="bar-tip">建议用纯色墙面作背景，肩部放松、面向光源</view>
+  </view>
+  <!-- 自定义尺寸 -->
+  <view wx:if="{{customOpen}}" class="modal-mask" catchtap="closeCustom">
+    <view class="modal" catchtap="noop">
+      <view class="modal-hd">自定义尺寸</view>
+      <view class="modal-bd">
+        <view class="unit-row">
+          <view class="unit {{customUnit === 'mm' ? 'on' : ''}}" data-u="mm" bindtap="pickUnit">毫米 mm</view>
+          <view class="unit {{customUnit === 'px' ? 'on' : ''}}" data-u="px" bindtap="pickUnit">像素 px</view>
+        </view>
+        <view class="input-row">
+          <input class="ipt" type="digit" value="{{customW}}" data-k="customW" bindinput="onCustomInput" placeholder="宽" />
+          <text class="ipt-x">×</text>
+          <input class="ipt" type="digit" value="{{customH}}" data-k="customH" bindinput="onCustomInput" placeholder="高" />
+        </view>
+        <view class="modal-tip">{{customHint}}</view>
+      </view>
+      <view class="modal-ft">
+        <view class="mbtn" bindtap="closeCustom">取消</view>
+        <view class="mbtn primary" bindtap="confirmCustom">用这个尺寸</view>
+      </view>
+    </view>
+  </view>
+
+</view>

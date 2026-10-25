@@ -1,0 +1,110 @@
+<view class="page">
+
+  <view class="stage">
+    <view class="frame" style="width:{{cw}}px;height:{{ch}}px">
+      <canvas
+        type="2d"
+        id="preview"
+        class="cv {{loading ? 'cv-hide' : 'cv-show'}}"
+        style="width:{{cw}}px;height:{{ch}}px"
+        bindtouchstart="onTouchStart"
+        catchtouchmove="onTouchMove"
+        bindtouchend="onTouchEnd"
+        bindtouchcancel="onTouchEnd"
+      ></canvas>
+
+      <image wx:if="{{resultSrc}}" class="result-img" src="{{resultSrc}}" mode="aspectFill"></image>
+
+      <view wx:if="{{loading}}" class="scan">
+        <image wx:if="{{srcPreview}}" class="scan-img" src="{{srcPreview}}" mode="aspectFill"></image>
+        <view class="scan-shade"></view>
+        <view class="scan-beam"></view>
+        <view class="scan-corner tl"></view>
+        <view class="scan-corner tr"></view>
+        <view class="scan-corner bl"></view>
+        <view class="scan-corner br"></view>
+        <view class="scan-badge">
+          <view class="scan-dot"></view>
+          <text class="scan-txt">{{scanTip}}</text>
+        </view>
+      </view>
+      <view wx:if="{{!loading && cutFail}}" class="flag">未识别到纯色背景，已保留原背景</view>
+    </view>
+
+    <view class="stage-foot">
+      <text class="hf-hint">拖动 · 双指缩放</text>
+      <text class="hf-reset" bindtap="resetFrame">重置构图</text>
+    </view>
+  </view>
+
+  <view class="panel">
+    <view class="tabs">
+      <view class="tab {{tab === 'bg' ? 'on' : ''}}" data-tab="bg" bindtap="switchTab">换底色</view>
+      <view class="tab {{tab === 'beauty' ? 'on' : ''}}" data-tab="beauty" bindtap="switchTab">美颜</view>
+    </view>
+
+    <!-- 换底色 -->
+    <view wx:if="{{tab === 'bg'}}" class="pane">
+      <view wx:if="{{bgs.length}}" class="swatches">
+        <view
+          wx:for="{{bgs}}"
+          wx:key="id"
+          class="sw {{bgIndex === index ? 'on' : ''}}"
+          data-i="{{index}}"
+          bindtap="pickBg"
+        >
+          <view class="sw-dot" style="background:{{item.color}}"></view>
+          <text class="sw-name">{{item.name}}</text>
+        </view>
+      </view>
+      <view wx:else class="pane-empty">这张照片的背景不是纯色，无法自动换底色。<text class="pe-hl">换一张纯色墙面前拍的照片</text>效果会好很多。</view>
+    </view>
+
+    <!-- 美颜 -->
+    <view wx:else class="pane">
+      <view class="bp-head">
+        <text class="bp-label">美颜程度</text>
+        <text class="bp-val">{{beauty}}</text>
+      </view>
+      <slider
+        class="bp-slider"
+        min="0"
+        max="100"
+        value="{{beauty}}"
+        activeColor="#2E6BF6"
+        backgroundColor="#E4EAF5"
+        block-size="22"
+        block-color="#FFFFFF"
+        bindchanging="onBeautyChanging"
+        bindchange="onBeautyChange"
+      />
+      <view class="presets">
+        <view
+          wx:for="{{presets}}"
+          wx:key="v"
+          class="preset {{beauty === item.v ? 'on' : ''}}"
+          data-v="{{item.v}}"
+          bindtap="pickPreset"
+        >{{item.label}}</view>
+      </view>
+      <view class="bp-note">证件照会用于身份核验，美颜幅度已限制在自然范围内——只做美白与轻微磨皮，不会改变脸型五官。</view>
+    </view>
+  </view>
+
+  <view class="bar">
+    <view class="bar-row">
+      <view class="bar-meta">
+        <text class="bm-name">{{size.name}}</text>
+        <text class="bm-px">{{size.pxText}}</text>
+        <text class="bm-engine {{engineAi ? 'on' : ''}}">{{engineLabel}}</text>
+      </view>
+      <button class="btn btn-primary bar-btn" hover-class="btn-hover" bindtap="onSave">生成并保存</button>
+    </view>
+    <view class="bar-tip">{{engineTip}}</view>
+  </view>
+
+  <!-- 离屏工作画布：承载抠图后的 RGBA，供预览与导出复用 -->
+  <canvas type="2d" id="loader" class="hidden-cv"></canvas>
+  <canvas type="2d" id="encoder" class="hidden-cv"></canvas>
+
+</view>

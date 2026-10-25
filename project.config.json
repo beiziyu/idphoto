@@ -1,0 +1,39 @@
+{
+  "description": "证件照 · 本机制作",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "libVersion": "2.32.3",
+  "appid": "wx48175b84e542440f",
+  "projectname": "idphoto",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "uglifyFileName": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "minifyWXML": true
+  },
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "docs"
+      }
+    ],
+    "include": []
+  },
+  "condition": {},
+  "cloudfunctionRoot": "cloudfunctions/"
+}

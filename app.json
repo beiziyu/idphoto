@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/edit/edit",
+    "pages/result/result",
+    "pages/sheet/sheet",
+    "pages/about/about"
+  ],
+  "window": {
+    "backgroundColor": "#F5F7FB",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "证件照",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "__usePrivacyCheck__": false
+}

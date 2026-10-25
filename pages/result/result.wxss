@@ -1,0 +1,116 @@
+.page {
+  min-height: 100vh;
+  padding: 20rpx 32rpx 60rpx;
+}
+
+/* ---------- 成功提示 ---------- */
+.head {
+  text-align: center;
+  padding: 26rpx 0 34rpx;
+}
+.ok {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 22rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3D7BFF, #2E6BF6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 26rpx rgba(46, 107, 246, 0.3);
+}
+.ok-ico {
+  width: 34rpx;
+  height: 18rpx;
+  border-left: 5rpx solid #fff;
+  border-bottom: 5rpx solid #fff;
+  transform: rotate(-45deg) translate(2rpx, -4rpx);
+  border-radius: 1rpx;
+}
+.ok-t {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #0D121D;
+  letter-spacing: 1rpx;
+}
+.ok-s {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #7C879B;
+}
+
+/* ---------- 成品 ---------- */
+.shot {
+  margin-top: 6rpx;
+}
+.shot-card {
+  width: 384rpx;
+  margin: 0 auto;
+  padding: 10rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0 16rpx 40rpx rgba(16, 21, 34, 0.16);
+}
+.shot-img {
+  display: block;
+  width: 100%;
+  border-radius: 4rpx;
+  background: #F1F4F9;
+}
+.shot-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24rpx;
+  font-size: 22rpx;
+  color: #7C879B;
+  font-variant-numeric: tabular-nums;
+}
+.sm-strong {
+  color: #2E6BF6;
+  font-weight: 600;
+}
+.sm-dot {
+  margin: 0 10rpx;
+  color: #C8D0DE;
+}
+.sm-dpi {
+  margin-left: 12rpx;
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 19rpx;
+  color: #6E7A90;
+  background: #EDF1F8;
+}
+
+/* ---------- 隐私 ---------- */
+.privacy-note {
+  margin-top: 34rpx;
+}
+
+/* ---------- 操作 ---------- */
+.acts {
+  margin-top: 40rpx;
+}
+.acts-row {
+  display: flex;
+  margin-top: 20rpx;
+}
+.acts-half {
+  flex: 1;
+}
+.acts-half + .acts-half {
+  margin-left: 20rpx;
+}
+.acts-tip {
+  margin-top: 26rpx;
+  text-align: center;
+  font-size: 20rpx;
+  line-height: 1.6;
+  color: #A8B0BF;
+}
+
+.ad-slot {
+  margin-top: 30rpx;
+}
