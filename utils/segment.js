@@ -1,19 +1,19 @@
 /**
  * 人像分割 provider
- * MODE: 'local'（颜色算法） | 'remote'（云函数 MODNet 语义分割，自动降级 local）
+ * MODE: 'local'（颜色算法） | 'remote'（云函数，主通道 = 腾讯云人像分割，自动降级 local）
  *
  * 远程链路：
- *   压缩图(320) → POST 云函数 → 返回原始 alpha 字节(base64) → 直接放大到目标尺寸
- * 不再走 PNG 解码，彻底避开小程序端 canvas 解 dataURL 的不确定性。
+ *   压缩图(≤700) → POST 云函数 → 云函数调腾讯云 SegmentPortraitPic →
+ *   合成底色按规格输出成品图 JPEG → 客户端落盘直接用 <image> 显示
  */
 
 const IMG = require('./image')
 
 const MODE = 'remote'
 const ENDPOINT = 'https://workbuddy-d7gdllq7e3ca333ec-1255772325.ap-shanghai.app.tcloudbase.com/segment'
-const UPLOAD_MAX = 700 // 受云函数网关请求体限制（实测 >1MB 会 413），取 900 长边
-const MAX_B64 = 80000 // base64 超过这个长度就降级重压，避免 413 // 和模型输入同尺寸，避免服务端放大导致边缘发糊
-const TIMEOUT = 20000 // 首次调用要冷启动加载模型（约 3 秒），8 秒不够
+const UPLOAD_MAX = 700 // 上传长边上限：云函数网关对请求体大小有限制，太大直接 413
+const MAX_B64 = 80000 // base64 超过这个长度就降档重压，宁可小一点也不能 413
+const TIMEOUT = 20000 // 首次调用含云函数冷启动，20 秒兜底
 
 let remoteFail = 0 // 连续失败次数，达到 2 次才熔断，避免一次超时就把整场会话锁死
 

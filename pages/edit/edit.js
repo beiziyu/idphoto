@@ -29,6 +29,7 @@ Page({
     loading: true,
     srcPreview: '',
     resultSrc: '',
+    composed: false,
     scanTip: '正在识别人像…',
     cutFail: false,
     dbg: '',
@@ -80,6 +81,8 @@ Page({
 
   onUnload() {
     if (this.beautyTimer) clearTimeout(this.beautyTimer)
+    this.stopScanTips()
+    if (this._watchdog) clearTimeout(this._watchdog)
     this.ctx = null
     this.previewNode = null
     this.loaderNode = null
@@ -204,28 +207,12 @@ Page({
         this.stopScanTips()
         this.setData({
           resultSrc: cut.imagePath,
+          composed: true,
           engineAi: true,
           engineLabel: '腾讯云切图',
           engineTip: '腾讯云人像分割 · 云端合成 · 耗时 压缩' + cut.timing.enc + ' 上传' + cut.timing.net + ' ms',
           loading: false,
           dbg: 'composed ' + this.outW + 'x' + this.outH
-        })
-        return
-      }
-      if (false) {
-        await this.drawComposed(cut.imagePath)
-        this.composed = true
-        this.metrics = null
-        this.opaqueMode = false
-        this.frame = { zoom: 1, tx: 0, ty: 0 }
-        this.stopScanTips()
-        this.applyBeautyTo(0)
-        this.setData({
-          engineAi: true,
-          engineLabel: '腾讯云切图',
-          engineTip: '腾讯云人像分割 · 云端合成 · 耗时 压缩' + cut.timing.enc + ' 上传' + cut.timing.net + ' ms',
-          loading: false,
-          dbg: 'composed ' + this.cutW + 'x' + this.cutH
         })
         return
       }
@@ -384,59 +371,6 @@ Page({
       clearInterval(this._tipTimer)
       this._tipTimer = null
     }
-  },
-
-  __probe() {
-    if (!this.loaderNode || !this.loaderCtx) return { err: 'no loader ctx' }
-    if (!this.imgData) return { err: 'no imgData' }
-    const d = this.loaderCtx.getImageData(0, 0, this.cutW, this.cutH).data
-    const cx = Math.floor(this.cutW / 2)
-    const cy = Math.floor(this.cutH / 2)
-    const c = cy * this.cutW + cx
-    let opaque = 0
-    for (let k = 3; k < d.length; k += 4 * 17) if (d[k] > 128) opaque++
-    return {
-      lw: this.loaderNode.width,
-      lh: this.loaderNode.height,
-      cutW: this.cutW,
-      cutH: this.cutH,
-      centerAlpha: d[c * 4 + 3],
-      centerRGB: [d[c * 4], d[c * 4 + 1], d[c * 4 + 2]],
-      opaquePct: Math.round(opaque / (d.length / (4 * 17)) * 100),
-      hasBase: !!this.baseData,
-      hasImgData: !!this.imgData,
-      frame: this.frame,
-      opaqueMode: this.opaqueMode
-    }
-  },
-
-  /** 把云端合成好的成品图铺进 loader 画布（尺寸即输出规格） */
-  drawComposed(path) {
-    const p = this
-    return new Promise((resolve, reject) => {
-      const img = p.loaderNode.createImage()
-      // 兜底超时：图片加载事件没回来时不能一直挂着
-      const timer = setTimeout(() => reject(new Error('成品图加载超时')), 8000)
-      img.onload = () => {
-        clearTimeout(timer)
-        p.loaderNode.width = p.outW
-        p.loaderNode.height = p.outH
-        const ctx = p.loaderNode.getContext('2d')
-        ctx.clearRect(0, 0, p.outW, p.outH)
-        ctx.drawImage(img, 0, 0, p.outW, p.outH)
-        p.loaderCtx = ctx
-        p.cutW = p.outW
-        p.cutH = p.outH
-        p.imgData = ctx.createImageData(p.outW, p.outH)
-        const d = ctx.getImageData(0, 0, p.outW, p.outH).data
-        p.baseData = d
-        p.scratch = new Uint8ClampedArray(d.length)
-        p.alphaPct = 100
-        resolve()
-      }
-      img.onerror = () => { clearTimeout(timer); reject(new Error('成品图加载失败')) }
-      img.src = path
-    })
   },
 
   queryNodes() {
@@ -642,7 +576,7 @@ Page({
     if (i === this.data.bgIndex) return
     // 成品图模式下底色已在云端合成，换色必须重新请求
     if (this.composed) {
-      this.setData({ bgIndex: i, loading: true, resultSrc: '' })
+      this.setData({ bgIndex: i, loading: true, resultSrc: '', composed: false })
       this.composed = false
       this.init()
       return

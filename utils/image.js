@@ -1,10 +1,11 @@
 /**
- * 本地图像处理引擎
- * ------------------------------------------------------------
- * 全部在手机端完成，不上传任何图片。包含三件事：
- *   1) detectHead    —— 基于肤色聚类估算头部位置，用于自动构图
+ * 本地图像处理引擎（云端主通道失败时的兜底，以及客户端本地构图/美颜）
+ * 包含：
+ *   1) detectHead    —— 基于肤色聚类估算头部位置
  *   2) buildAlpha    —— 从边框采样背景色做连通泛洪，抠出人像 alpha
- *   3) applyBeauty   —— 可调美颜（美白 / 磨皮 / 红润），保边不糊五官
+ *   3) applyBeauty   —— 可调美颜（美白 / 磨皮 / 红润）
+ *   4) unmixEdges    —— 背景色反解，去掉发丝边缘白圈
+ *   5) measureHeadFromMask / silhouetteFromAlpha —— 从遮罩测头部尺寸
  *
  * 所有函数都直接操作 RGBA 的 Uint8ClampedArray，避免中间对象分配。
  */
@@ -180,116 +181,12 @@ function unmixEdges(data, alpha, w, h) {
   return hit
 }
 
-/**
- * 边缘微收紧：把「很淡的半透明」压掉。
- * 薄发丝会透出背景色，形成一圈很淡的光晕；这种像素对画面贡献很小，
- * 直接降低不透明度就能让它消失，而正常发丝（alpha 较高的）不受影响。
- */
-function tightenEdge(alpha, w, h, offset, gamma) {
-  const lo = offset === undefined ? 0.055 : offset
-  const gm = gamma === undefined ? 1.35 : gamma
-  for (let i = 0; i < alpha.length; i++) {
-    const a = alpha[i] / 255
-    if (a <= 0) continue
-    const t = (a - lo) / (1 - lo)
-    alpha[i] = t <= 0 ? 0 : Math.round(255 * Math.pow(Math.min(1, t), gm))
-  }
-}
 
 
-/**
- * 抑制背景透光：只削「明显比周围实心像素更亮」的半透明像素。
- * 薄发丝会透出浅色背景形成一圈光晕，这类像素亮度显著高于邻近的实心头发；
- * 正常的深色发丝不会被误伤 —— 所以不能一刀切按 alpha 压。
- * 返回被削的像素数，方便日志确认真的起作用了。
- */
-function suppressHalo(data, alpha, w, h) {
-  const n = w * h
-  const mark = new Uint8Array(n)
-  for (let y = 1; y < h - 1; y++) {
-    const row = y * w
-    for (let x = 1; x < w - 1; x++) {
-      const p = row + x
-      const a = alpha[p]
-      if (a === 0 || a >= 245) continue
-      const nbs = [p - 1, p + 1, p - w, p + w]
-      let sum = 0
-      let c = 0
-      for (let k = 0; k < 4; k++) {
-        const q = nbs[k]
-        if (alpha[q] >= 245) {
-          const j = q * 4
-          sum += data[j] * 0.299 + data[j + 1] * 0.587 + data[j + 2] * 0.114
-          c++
-        }
-      }
-      if (!c) continue
-      const i = p * 4
-      const lum = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114
-      // 阈值从 30 放宽到 14：白边里很多像素只比头发亮十几级，
-      // 之前 30 的阈值把它们放过了，白边就留了下来。
-      if (lum > sum / c + 30) mark[p] = 1
-    }
-  }
-  let hit = 0
-  for (let p = 0; p < n; p++) {
-    if (mark[p]) {
-      alpha[p] = Math.round(alpha[p] * 0.3)
-      if (alpha[p] < 26) alpha[p] = 0
-      hit++
-    }
-  }
-  return hit
-}
 
-/**
- * 边缘去色（对外复用）：半透明像素的 RGB 仍是背景那一侧的颜色（白），
- * 直接合成到彩色底上就是一圈白光晕 —— 头发边缘最明显。
- * 用邻近「完全不透明」像素的颜色替换它，形状不动，白边消失。
- */
-function decontaminate(data, alpha, w, h) {
-  // 优化版：只遍历「半透明」像素，多轮从实心区向外扩散。
-  // alpha 上限从 245 放宽到 252：白边像素往往 alpha 已经接近实心（250+），
-  // 之前 245 的门槛把它们挡在去色范围外，白边就留了下来。
-  const n = w * h
-  let cand = []
-  for (let p = 0; p < n; p++) {
-    const a = alpha[p]
-    if (a > 0 && a < 245) cand.push(p)
-  }
-  const done = new Uint8Array(n)
-  for (let i = 0; i < n; i++) if (alpha[i] >= 245) done[i] = 1
 
-  for (let pass = 0; pass < 8 && cand.length; pass++) {
-    let changed = 0
-    const next = []
-    for (let k = 0; k < cand.length; k++) {
-      const p = cand[k]
-      if (done[p]) continue
-      let r = 0
-      let g = 0
-      let b = 0
-      let c = 0
-      const n1 = p - 1
-      const n2 = p + 1
-      const n3 = p - w
-      const n4 = p + w
-      if (done[n1]) { const j = n1 * 4; r += data[j]; g += data[j + 1]; b += data[j + 2]; c++ }
-      if (done[n2]) { const j = n2 * 4; r += data[j]; g += data[j + 1]; b += data[j + 2]; c++ }
-      if (done[n3]) { const j = n3 * 4; r += data[j]; g += data[j + 1]; b += data[j + 2]; c++ }
-      if (done[n4]) { const j = n4 * 4; r += data[j]; g += data[j + 1]; b += data[j + 2]; c++ }
-      if (!c) { next.push(p); continue }
-      const i = p * 4
-      data[i] = r / c
-      data[i + 1] = g / c
-      data[i + 2] = b / c
-      done[p] = 1
-      changed++
-    }
-    if (!changed) break
-    cand = next
-  }
-}
+
+
 
 
 /**
@@ -978,11 +875,8 @@ module.exports = {
   isSkin,
   detectHead,
   buildAlpha,
-  decontaminate,
   silhouetteFromAlpha,
   measureHeadFromMask,
-  tightenEdge,
-  suppressHalo,
   unmixEdges,
   applyBeauty,
   computeFrame,

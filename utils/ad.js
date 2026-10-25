@@ -22,46 +22,7 @@ const AD = {
   interstitialEvery: 4
 }
 
-let rewardedAd = null
 let saveCount = 0
-
-function initAds() {
-  if (!AD.enabled || !AD.rewardedUnitId || !wx.createRewardedVideoAd) return
-  rewardedAd = wx.createRewardedVideoAd({ adUnitId: AD.rewardedUnitId })
-  rewardedAd.onError(() => {})
-  rewardedAd.onLoad(() => {})
-}
-
-/**
- * 展示激励视频。
- * 返回 Promise<{ ok: boolean, watched: boolean }>
- * - 广告未开启：立刻返回 { ok: true, watched: false }，用户无感
- * - 用户中途关闭：watched = false，业务方自行决定是否给权益
- */
-function showRewarded() {
-  return new Promise(resolve => {
-    if (!AD.enabled || !rewardedAd) {
-      resolve({ ok: true, watched: false })
-      return
-    }
-    let settled = false
-    const done = watched => {
-      if (settled) return
-      settled = true
-      rewardedAd.offClose(onClose)
-      resolve({ ok: true, watched })
-    }
-    function onClose(res) {
-      done(!!(res && res.isEnded))
-    }
-    rewardedAd.onClose(onClose)
-    rewardedAd
-      .show()
-      .catch(() =>
-        rewardedAd.load().then(() => rewardedAd.show()).catch(() => done(false))
-      )
-  })
-}
 
 /** 保存成功后的插屏，节流展示 */
 function maybeInterstitial() {
@@ -75,4 +36,4 @@ function maybeInterstitial() {
   } catch (e) {}
 }
 
-module.exports = { AD, initAds, showRewarded, maybeInterstitial }
+module.exports = { AD, maybeInterstitial }

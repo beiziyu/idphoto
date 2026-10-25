@@ -31,7 +31,7 @@
       <view wx:if="{{!loading && cutFail}}" class="flag">未识别到纯色背景，已保留原背景</view>
     </view>
 
-    <view class="stage-foot">
+    <view wx:if="{{!composed}}" class="stage-foot">
       <text class="hf-hint">拖动 · 双指缩放</text>
       <text class="hf-reset" bindtap="resetFrame">重置构图</text>
     </view>
@@ -40,7 +40,7 @@
   <view class="panel">
     <view class="tabs">
       <view class="tab {{tab === 'bg' ? 'on' : ''}}" data-tab="bg" bindtap="switchTab">换底色</view>
-      <view class="tab {{tab === 'beauty' ? 'on' : ''}}" data-tab="beauty" bindtap="switchTab">美颜</view>
+      <view wx:if="{{!composed}}" class="tab {{tab === 'beauty' ? 'on' : ''}}" data-tab="beauty" bindtap="switchTab">美颜</view>
     </view>
 
     <!-- 换底色 -->
